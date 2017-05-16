@@ -1,0 +1,356 @@
+<style type="text/css">
+    #resistor {text-align:center}
+  </style>
+  
+  <style type="text/css">
+    #resistor { text-align:center }
+    select.resistorSelect { display:none }
+</style>
+
+
+<script>
+        // create array listing all the multiplier values
+        var multiplier = new Array()
+        multiplier[0] = 0
+        multiplier[1] = 1
+        multiplier[2] = 2
+        multiplier[3] = 3
+        multiplier[4] = 4
+        multiplier[5] = 5
+        multiplier[6] = 6
+        multiplier[7] = 7
+        multiplier[8] = 8
+        multiplier[9] = 9
+        multiplier[10] = -1
+        multiplier[11] = -2
+
+        // create array listing all tolerance values
+        var tolerance = new Array()
+        tolerance[0] = "5"
+        tolerance[1] = "10"
+        tolerance[2] = "20"
+
+        // format large values into kilo and meg
+        function format(ohmage) {
+            /*
+            if (ohmage >= 1e6) {
+                ohmage /= 1e6
+                return "" + ohmage + " Mohms"
+            } else {
+                if (ohmage >= 1e3) {
+                    ohmage /= 1e3
+                    return "" + ohmage + " Kohms"
+                } else {
+                    return "" + ohmage + " ohms"
+                }
+            }
+            */
+            return ohmage
+        }
+
+        // calculate resistance and tolerance values
+        function calcOhms() {
+            var form = document.forms["input"]
+            var d1 = form.tensSelect.selectedIndex
+            var d2 = form.onesSelect.selectedIndex
+            var m = form.multiplierSelect.selectedIndex
+            var t = form.toleranceSelect.selectedIndex
+            var ohmage = (d1 * 10) + d2
+            ohmage = eval("" + ohmage + "e" + multiplier[m])
+            ohmage = format(ohmage)
+            var tol = tolerance[t]
+            //document.forms["output"].result.value = ohmage + ", " + tol
+            document.forms["output"].result.value = ohmage
+            document.forms["output"].toleranceInput.value = tol
+        }
+
+        // pre-load all color images into image cache
+        //var colorArray = new Array("Black", "Blue", "Brown", "Gold", "Gray", "Green", "None", "Orange", "Red", "Silver", "Violet", "White", "Yellow")
+        
+        var colorArray = new Array("Black", "Brown", "Red", "Orange", "Yellow", "Green", "Blue", "Violet", "Gray", "White", "Gold", "None", "Silver")
+        
+        var imageDB = new Array()
+        for (i = 0; i < colorArray.length; i++) {
+            imageDB[colorArray[i]] = new Image(21, 182)
+            imageDB[colorArray[i]].src = colorArray[i] + ".gif"
+        }
+
+        function setTens(choice) {
+            var tensColor = choice.options[choice.selectedIndex].value
+            document.tens.src = imageDB[tensColor].src
+            calcOhms()
+        }
+
+        function setOnes(choice) {
+            var onesColor = choice.options[choice.selectedIndex].value
+            document.ones.src = imageDB[onesColor].src
+            calcOhms()
+        }
+
+        function setMult(choice) {
+            var multColor = choice.options[choice.selectedIndex].value
+            document.mult.src = imageDB[multColor].src
+            calcOhms()
+        }
+
+        function setTol(choice) {
+            var tolColor = choice.options[choice.selectedIndex].value
+            document.tol.src = imageDB[tolColor].src
+            calcOhms()
+        }
+
+        window.onload = calcOhms;
+
+        //my scripts
+        function changeTensTop() {
+            var form = document.forms["input"]
+            var currentTensDigit = form.tensSelect.selectedIndex
+            var previousTensColor = form.tensSelect.options[currentTensDigit - 1].text
+            document.getElementById('tensSelect').value = previousTensColor;
+            document.tens.src = imageDB[previousTensColor].src
+            calcOhms()
+        }
+
+        function changeTensBot() {
+            var form = document.forms["input"]
+            var currentTensDigit = form.tensSelect.selectedIndex
+            var nextTensColor = form.tensSelect.options[currentTensDigit + 1].text
+            document.getElementById('tensSelect').value = nextTensColor;
+            document.tens.src = imageDB[nextTensColor].src
+            calcOhms()
+        }
+
+        function changeOnesTop() {
+            var form = document.forms["input"]
+            var currentOnesDigit = form.onesSelect.selectedIndex
+            var previousOnesColor = form.onesSelect.options[currentOnesDigit - 1].text
+            document.getElementById('onesSelect').value = previousOnesColor;
+            document.ones.src = imageDB[previousOnesColor].src
+            calcOhms()
+        }
+
+        function changeOnesBot() {
+            var form = document.forms["input"]
+            var currentOnesDigit = form.onesSelect.selectedIndex
+            var nextOnesColor = form.onesSelect.options[currentOnesDigit + 1].text
+            document.getElementById('onesSelect').value = nextOnesColor;
+            document.ones.src = imageDB[nextOnesColor].src
+            calcOhms()
+        }
+
+        function changeMultiplierTop() {
+            var form = document.forms["input"]
+            var currentMultiplierDigit = form.multiplierSelect.selectedIndex
+            var previousMultiplierColor = form.multiplierSelect.options[currentMultiplierDigit - 1].text
+            document.getElementById('multiplierSelect').value = previousMultiplierColor;
+            document.mult.src = imageDB[previousMultiplierColor].src
+            calcOhms()
+        }
+
+        function changeMultiplierBot() {
+            var form = document.forms["input"]
+            var currentMultiplierDigit = form.multiplierSelect.selectedIndex
+            var nextMultiplierColor = form.multiplierSelect.options[currentMultiplierDigit + 1].text
+            document.getElementById('multiplierSelect').value = nextMultiplierColor;
+            document.mult.src = imageDB[nextMultiplierColor].src
+            calcOhms()
+        }
+
+        function changeToleranceTop() {
+            var form = document.forms["input"]
+            var currentToleranceDigit = form.toleranceSelect.selectedIndex
+            var previousToleranceColor = form.toleranceSelect.options[currentToleranceDigit - 1].text
+            document.getElementById('toleranceSelect').value = previousToleranceColor;
+            document.tol.src = imageDB[previousToleranceColor].src
+            calcOhms()
+        }
+
+        function changeToleranceBot() {
+            var form = document.forms["input"]
+            var currentToleranceDigit = form.toleranceSelect.selectedIndex
+            var nextToleranceColor = form.toleranceSelect.options[currentToleranceDigit + 1].text
+            document.getElementById('toleranceSelect').value = nextToleranceColor;
+            document.tol.src = imageDB[nextToleranceColor].src
+            calcOhms()
+        }
+        
+        function valueToColors() {            
+            var resValue = document.getElementById('result').value
+            var toler = document.getElementById('toleranceInput').value            
+            if (resValue && toler) {
+                
+                //resValue = parseInt(resValue);
+                //toler = parseInt(toler);                                
+                
+                //transform value to a proper one
+                var tempValueArray = resValue.split("")                                
+                for (var i = 2; i < tempValueArray.length; i++) {
+                    if (tempValueArray[i] !== '0') {
+                        tempValueArray[i] = 0
+                    }
+                }
+                resValue = tempValueArray.join('')     
+                
+                
+                //set toler values to color
+                if (toler <= 5) {
+                    toler = 5
+                    tolerColor = "Gold"
+                } else if (toler >= 20) {
+                    toler = 20
+                    tolerColor = "None"
+                } else {
+                    toler = 10
+                    tolerColor = "Silver"
+                }                
+                document.getElementById('toleranceSelect').value = tolerColor
+                document.tol.src = imageDB[tolerColor].src
+                
+                //boundaries 0 to 99000000000
+                if (resValue > 99000000000) {
+                    resValue = 99000000000
+                } else if (resValue < 0) {
+                    resValue = 0
+                }
+                
+                //multiplier                
+                var multiplierCounter = 0
+                var tempValue = resValue
+                while (tempValue > 99) {
+                    tempValue /= 10
+                    multiplierCounter++
+                }
+                document.getElementById('multiplierSelect').value = colorArray[multiplierCounter]
+                document.mult.src = imageDB[colorArray[multiplierCounter]].src
+                
+                //tens                                
+                var tensCounter = 0
+                while (tempValue >= 10) {
+                    tempValue -= 10                    
+                    tensCounter++
+                }
+                document.getElementById('tensSelect').value = colorArray[tensCounter]
+                document.tens.src = imageDB[colorArray[tensCounter]].src
+                  
+                //ones                
+                var onesCounter = tempValue
+                document.getElementById('onesSelect').value = colorArray[onesCounter]
+                document.ones.src = imageDB[colorArray[onesCounter]].src                               
+                                                            
+            }
+        }
+
+</script>
+
+<div class="container">
+   
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div id="resistor">
+        <h2>Calculate Resistor Values from Color Codes</h2>
+
+        <form name="input">
+            <select name="tensSelect" onChange="setTens(this)" id="tensSelect" class="resistorSelect">	
+                <option value="Black" selectED> Black	
+                <option value="Brown"> Brown	
+                <option value="Red"> Red	
+                <option value="Orange"> Orange	
+                <option value="Yellow"> Yellow	
+                <option value="Green"> Green	
+                <option value="Blue"> Blue	
+                <option value="Violet"> Violet	
+                <option value="Gray"> Gray	
+                <option value="White"> White
+            </select>
+
+            <select name="onesSelect" onChange="setOnes(this)" id="onesSelect" class="resistorSelect">
+                <option value="Black" selectED> Black	
+                <option value="Brown"> Brown	
+                <option value="Red"> Red	
+                <option value="Orange"> Orange	
+                <option value="Yellow"> Yellow	
+                <option value="Green"> Green	
+                <option value="Blue"> Blue	
+                <option value="Violet"> Violet	
+                <option value="Gray"> Gray	
+                <option value="White"> White
+            </select>
+
+            <select name="multiplierSelect" onChange="setMult(this)" id="multiplierSelect" class="resistorSelect">
+                <option value="Black" selectED> Black	
+                <option value="Brown"> Brown	
+                <option value="Red"> Red	
+                <option value="Orange"> Orange	
+                <option value="Yellow"> Yellow	
+                <option value="Green"> Green	
+                <option value="Blue"> Blue	
+                <option value="Violet"> Violet	
+                <option value="Gray"> Gray	
+                <option value="White"> White	
+                <option value="Gold"> Gold	
+                <option value="Silver"> Silver
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;
+            <select name="toleranceSelect" oninput="setTol(this)" id="toleranceSelect" class="resistorSelect">
+                <option value="Gold"> Gold	
+                <option value="Silver"> Silver	
+                <option value="None"> None
+            </select>
+        </form>
+
+
+        <map name="tensMap">                     
+            <area shape="rect" coords="0,0,100,100" alt="otherThing" href="#1" onclick="changeTensTop()">        
+            <area shape="rect" coords="0,100,200,200" alt="otherThing" href="#2" onclick="changeTensBot()">    
+        </map>
+        <map name="onesMap">                     
+            <area shape="rect" coords="0,0,100,100" alt="otherThing" href="#1" onclick="changeOnesTop()">        
+            <area shape="rect" coords="0,100,200,200" alt="otherThing" href="#2" onclick="changeOnesBot()">    
+        </map>
+        <map name="multiplierMap">                     
+            <area shape="rect" coords="0,0,100,100" alt="otherThing" href="#1" onclick="changeMultiplierTop()">        
+            <area shape="rect" coords="0,100,200,200" alt="otherThing" href="#2" onclick="changeMultiplierBot()">    
+        </map>
+        <map name="toleranceMap">                     
+            <area shape="rect" coords="0,0,100,100" alt="otherThing" href="#1" onclick="changeToleranceTop()">        
+            <area shape="rect" coords="0,100,200,200" alt="otherThing" href="#2" onclick="changeToleranceBot()">    
+        </map>
+
+        <script>
+            var form = document.forms["input"]
+            var tensDigit = form.tensSelect.selectedIndex
+            var tensColor = form.tensSelect.options[tensDigit].text
+            var onesDigit = form.onesSelect.selectedIndex
+            var onesColor = form.onesSelect.options[onesDigit].text
+            var multDigit = form.multiplierSelect.selectedIndex
+            var multColor = form.multiplierSelect.options[multDigit].text
+            var tolDigit = form.toleranceSelect.selectedIndex
+            var tolColor = form.toleranceSelect.options[tolDigit].text
+            var table = "<table border=2 align=center><form name='output'>"
+            table += "<tr><th align=middle>Resistance Value:</th>"
+            table += " <th align='middle'><input type='text' name='result' size=10 oninput='valueToColors()' id='result'>" + 
+                " Ohm, +/- " + 
+                "<input type='text' name='toleranceInput' size=1 oninput='valueToColors()' id='toleranceInput'>%"
+            table += "</th></tr><tr><td colspan=2>&nbsp;"
+            table += "<img SRC='resleft.gif' width=127 height=182><img" +
+                " src='" + tensColor + ".gif' name='tens' width=21 height=182 usemap='#tensMap'><img" +
+                " src='" + onesColor + ".gif' name='ones' width=21 height=182 usemap='#onesMap'><img" +
+                " src='" + multColor + ".gif' name='mult' width=21 height=182 usemap='#multiplierMap'><img" +
+                " src='spacer.gif' width=17 height=182><img" +
+                " src='" + tolColor + ".gif' name='tol' width=21 height=182  usemap='#toleranceMap'><img" +
+                " src='resright.gif' width=127 height=182>"
+            table += "&nbsp;</td></tr></form></table>"
+            document.write(table)
+
+        </script>
+
+
+    </div>
+
+    </div>
+</div>
+
+  
+
+</div>
+
